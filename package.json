@@ -4,11 +4,8 @@
   "description": "Reply-only Twitter bot for $GORK token (Agent Pepe model)",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc",
     "start": "tsx src/main.ts",
-    "dev": "tsx src/main.ts",
-    "lint": "eslint src/**/*.ts",
-    "test": "tsx src/security-test.ts"
+    "dev": "tsx src/main.ts"
   },
   "keywords": ["twitter", "bot", "solana", "pump.fun", "reply"],
   "author": "JMoon",
