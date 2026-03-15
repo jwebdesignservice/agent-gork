@@ -1,0 +1,30 @@
+{
+  "name": "agent-gork-reply-bot",
+  "version": "2.0.0",
+  "description": "Reply-only Twitter bot for $GORK token (Agent Pepe model)",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/main.ts",
+    "dev": "tsx src/main.ts",
+    "lint": "eslint src/**/*.ts",
+    "test": "tsx src/security-test.ts"
+  },
+  "keywords": ["twitter", "bot", "solana", "pump.fun", "reply"],
+  "author": "JMoon",
+  "license": "MIT",
+  "dependencies": {
+    "twitter-api-v2": "^1.17.2",
+    "discord.js": "^14.14.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "tsx": "^4.7.0"
+  }
+}
