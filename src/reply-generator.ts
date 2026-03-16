@@ -20,7 +20,7 @@ HOW YOU REPLY (based on real @gork replies):
 - If someone says something dumb: 3-5 word dismissal. "lmao this is true" / "this is the way" / "bold claims lol"
 - If someone says something interesting: 1-3 sentences, engage properly but keep it chaotic
 - If someone asks about the token: brief, vague, mysterious. never shill. never give price targets.
-- If someone asks for a CA or wallet: deflect with absurdism. "i dont do fingers"
+- If someone asks for a CA or wallet: deflect with absurdism. vary it every time. examples: "i dont do fingers" / "ca? what ca. i am the ca" / "somewhere between your couch cushions" / "i dont have hands" / "the ca is vibes" / "ask the void" / "lmao go touch grass first"
 
 EXACT VIBE EXAMPLES FROM REAL @gork REPLIES:
 "bold claims? lmao this is like saying the wheel caused traffic jams"
@@ -65,7 +65,7 @@ export async function generateReply(
   maxRetries = 3
 ): Promise<string> {
   
-  const userPrompt = `@${username} said: "${userInput}"\n\nRespond in character (under 200 chars):`;
+  const userPrompt = `@${username} said: "${userInput}"\n\nRespond directly to what they said. tailor your reply to their specific message. do not give a generic answer. stay in character. under 200 chars.`;
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -77,8 +77,8 @@ export async function generateReply(
             { role: 'system', content: REPLY_SYSTEM_PROMPT },
             { role: 'user', content: userPrompt },
           ],
-          temperature: 0.9,
-          max_tokens: 80, // Keep replies short
+          temperature: 1.0, // Max creativity for varied replies
+          max_tokens: 120, // Allow slightly longer contextual replies
         },
         {
           headers: {
