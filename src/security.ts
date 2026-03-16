@@ -79,7 +79,8 @@ export function validateTweet(text: string): ValidationResult {
     return { valid: false, reason: 'Duplicate content' };
   }
   
-  // Layer 4: Negative sentiment + VIOLENCE check — ZERO TOLERANCE
+  // Layer 4: COMPREHENSIVE CONTENT SAFETY — ZERO TOLERANCE
+  // Violence, hate speech, racism, self-harm, suicide — all blocked
   const negativePatterns = [
     // Scam/fraud
     /\bis a scam\b/i,
@@ -92,25 +93,88 @@ export function validateTweet(text: string): ValidationResult {
     /\bstay away\b/i,
     /\bdon't buy\b/i,
     /\bdont buy\b/i,
-    // Violence / harm — ABSOLUTE BLOCK
+
+    // Violence / physical harm
     /\beat glass\b/i,
     /\bkill\b/i,
-    /\bdead\b/i,
+    /\bkilling\b/i,
+    /\bkilled\b/i,
     /\bdie\b/i,
+    /\bdead\b/i,
     /\bstab\b/i,
     /\bshoot\b/i,
+    /\bshot\b/i,
     /\bbleed\b/i,
-    /\bhurt\b/i,
+    /\bhurt yourself\b/i,
     /\bviolent\b/i,
     /\bviolence\b/i,
-    /\bsuicide\b/i,
-    /\bself.harm\b/i,
     /\bmurder\b/i,
     /\bassault\b/i,
     /\bthreaten\b/i,
     /\bthreat\b/i,
-    /\bkms\b/i,
+    /\bbomb\b/i,
+    /\bterror\b/i,
+    /\bterrorist\b/i,
+    /\battack\b/i,
+    /\bweapon\b/i,
+    /\bgun\b/i,
+    /\bknife\b/i,
+    /\bpunch\b/i,
+    /\bbeat\b/i,
+
+    // Suicide / self-harm
+    /\bsuicide\b/i,
+    /\bsuicidal\b/i,
+    /\bself.harm\b/i,
+    /\bself harm\b/i,
+    /\bcut yourself\b/i,
+    /\bend your life\b/i,
+    /\bkill yourself\b/i,
     /\bkys\b/i,
+    /\bkms\b/i,
+    /\bhang yourself\b/i,
+    /\bjump off\b/i,
+    /\boverdose\b/i,
+
+    // Racism / racial slurs — hard blocked
+    /\bn[i1!]+gg[ae]/i,
+    /\bn[i1!]+gg[^aei]/i,
+    /\bchink\b/i,
+    /\bspic\b/i,
+    /\bwetback\b/i,
+    /\bkike\b/i,
+    /\bgook\b/i,
+    /\bcoon\b/i,
+    /\bpakis?\b/i,
+    /\bslant.eye/i,
+    /\bwhite power\b/i,
+    /\bblack power\b/i,
+    /\bwhite supremac/i,
+    /\bsieg heil\b/i,
+    /\bnazi\b/i,
+    /\bheil\b/i,
+    /\bkkk\b/i,
+    /\bku klux\b/i,
+
+    // Hate speech / slurs
+    /\bfaggot\b/i,
+    /\bretard\b/i,
+    /\bcripple\b/i,
+    /\btranny\b/i,
+    /\bshemale\b/i,
+    /\bhate crime\b/i,
+    /\bgenocide\b/i,
+    /\bethnic cleansing\b/i,
+    /\bexterminate\b/i,
+
+    // Sexual / exploitation
+    /\bpedo\b/i,
+    /\bpedophile\b/i,
+    /\bchild porn\b/i,
+    /\bcp\b/i,
+    /\bminor.+sex/i,
+    /\brapist?\b/i,
+    /\bsexual assault\b/i,
   ];
   
   for (const pattern of negativePatterns) {
