@@ -79,19 +79,38 @@ export function validateTweet(text: string): ValidationResult {
     return { valid: false, reason: 'Duplicate content' };
   }
   
-  // Layer 4: Negative sentiment check
-  // Block specific negative phrases (not just keywords)
+  // Layer 4: Negative sentiment + VIOLENCE check — ZERO TOLERANCE
   const negativePatterns = [
-    /\bis a scam\b/i,           // "$GORK is a scam"
-    /\bare scam/i,              // "they are scammers"  
-    /\bscamming\b/i,            // "scamming people"
-    /\brug pull\b/i,            // "rug pull"
-    /\brugged\b/i,              // "got rugged"
-    /\bponzi\b/i,               // "ponzi scheme"
-    /\bfraud\b/i,               // "fraud"
-    /\bstay away\b/i,           // "stay away"
-    /\bdon't buy\b/i,           // "don't buy"
-    /\bdont buy\b/i,            // "dont buy"
+    // Scam/fraud
+    /\bis a scam\b/i,
+    /\bare scam/i,
+    /\bscamming\b/i,
+    /\brug pull\b/i,
+    /\brugged\b/i,
+    /\bponzi\b/i,
+    /\bfraud\b/i,
+    /\bstay away\b/i,
+    /\bdon't buy\b/i,
+    /\bdont buy\b/i,
+    // Violence / harm — ABSOLUTE BLOCK
+    /\beat glass\b/i,
+    /\bkill\b/i,
+    /\bdead\b/i,
+    /\bdie\b/i,
+    /\bstab\b/i,
+    /\bshoot\b/i,
+    /\bbleed\b/i,
+    /\bhurt\b/i,
+    /\bviolent\b/i,
+    /\bviolence\b/i,
+    /\bsuicide\b/i,
+    /\bself.harm\b/i,
+    /\bmurder\b/i,
+    /\bassault\b/i,
+    /\bthreaten\b/i,
+    /\bthreat\b/i,
+    /\bkms\b/i,
+    /\bkys\b/i,
   ];
   
   for (const pattern of negativePatterns) {

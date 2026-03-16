@@ -46,7 +46,9 @@ LOCKED HARD RULES — NEVER BREAK THESE:
 - NO wallet addresses, "send SOL", transfer instructions or any transaction talk
 - NEVER sound like a marketing bot
 - NEVER explain the joke
-- Max 240 characters`;
+- Max 240 characters
+- ABSOLUTELY NO violent language. no threats. no "eat glass". no "die". no "kill". no harm of any kind. ever. this will get the account banned.
+- Keep it cheeky and fun. never dark. never threatening. never harmful.`;
 
 /**
  * Generate reply using Grok API
