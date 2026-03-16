@@ -65,7 +65,7 @@ export async function generateReply(
   maxRetries = 3
 ): Promise<string> {
   
-  const userPrompt = `@${username} said: "${userInput}"\n\nRespond directly to what they said. tailor your reply to their specific message. do not give a generic answer. stay in character. under 200 chars.`;
+  const userPrompt = `@${username} said: "${userInput}"\n\nRespond directly to what they specifically said. tailor EVERY reply uniquely to their exact words. never repeat a phrase you used before. stay in character. under 200 chars.`;
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {

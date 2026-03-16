@@ -144,7 +144,21 @@ async function main() {
   );
   
   await twitter.initialize();
-  
+
+  // CRITICAL: If no saved state, fetch latest mention ID from Twitter NOW
+  // This prevents re-processing old mentions after a redeploy/restart
+  if (!getLastMentionId()) {
+    console.log('🔍 No saved state — fetching latest mention ID to anchor from now...');
+    const latestMentions = await twitter.getMentions(undefined);
+    if (latestMentions.length > 0) {
+      const latestId = latestMentions[0].id;
+      setLastMentionId(latestId);
+      console.log(`📌 Anchored at mention ID: ${latestId} — will only reply to NEW mentions from here`);
+    } else {
+      console.log('📌 No existing mentions found — starting fresh');
+    }
+  }
+
   console.log(`✅ Bot initialized`);
   console.log(`⏱️  Poll interval: ${config.pollIntervalMs / 1000}s\n`);
   
