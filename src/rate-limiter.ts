@@ -3,7 +3,7 @@
 // In-memory rate limit tracking
 const lastReply = new Map<string, number>();
 
-const REPLY_COOLDOWN_MS = 3600000; // 1 hour
+const REPLY_COOLDOWN_MS = 1800000; // 30 min - reduced for verified account
 
 /**
  * Check if we can reply to this user

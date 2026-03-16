@@ -3,7 +3,7 @@
 let repliesToday = 0;
 let currentDate = new Date().toDateString();
 
-const MAX_REPLIES_PER_DAY = 20; // Conservative limit for new accounts
+const MAX_REPLIES_PER_DAY = 100; // Increased - verified blue tick account
 
 export function canReplyToday(): boolean {
   const today = new Date().toDateString();
