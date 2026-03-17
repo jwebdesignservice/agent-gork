@@ -4,3 +4,8 @@ node_modules/
 dist/
 *.log
 .DS_Store
+
+# Local utility scripts (contain hardcoded credentials)
+quick-check.mjs
+check-status.js
+find-unreplied.mjs
