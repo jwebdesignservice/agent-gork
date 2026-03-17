@@ -77,7 +77,7 @@ export async function generateReply(
             { role: 'system', content: REPLY_SYSTEM_PROMPT },
             { role: 'user', content: userPrompt },
           ],
-          temperature: 1.0, // Max creativity for varied replies
+          temperature: 0.85, // High creativity but within safe bounds
           max_tokens: 120, // Allow slightly longer contextual replies
         },
         {
