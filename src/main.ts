@@ -6,9 +6,11 @@ import { TwitterClient } from './twitter';
 import { generateReply } from './reply-generator';
 import { sanitizeInput, shouldReply } from './input-sanitizer';
 import { canReply, recordReply, getRateLimitStats } from './rate-limiter';
+import { addToRecentTweets } from './security';
 import { canReplyToday, recordDailyReply, getDailyStats } from './daily-limiter';
 import { validateTweet } from './security';
 import { loadState, getLastMentionId, setLastMentionId, hasRepliedToTweet, markTweetReplied } from './state-manager';
+import { addToRecentTweets } from './security';
 
 // Configuration
 const config = {
@@ -64,9 +66,15 @@ async function processMentions(twitter: TwitterClient) {
           continue;
         }
         
-        // Check daily limit (anti-spam - 20 replies max per day)
+        // Check daily limit
         if (!canReplyToday()) {
-          console.log('   ⏱️  Skipping (daily limit reached: 20/day)');
+          console.log('   ⏱️  Skipping (daily limit reached)');
+          continue;
+        }
+
+        // Check per-user rate limit (30 min cooldown)
+        if (!canReply(mention.author_id)) {
+          console.log(`   ⏱️  Skipping (user ${mention.author_username} on cooldown)`);
           continue;
         }
         
@@ -103,6 +111,12 @@ async function processMentions(twitter: TwitterClient) {
         // Record reply for rate limiting
         recordReply(mention.author_id);
         recordDailyReply();
+
+        // Register reply in duplicate detector so Grok never repeats itself
+        addToRecentTweets(reply);
+
+        // Add to recent tweets (prevents repeating same reply)
+        addToRecentTweets(reply);
         
         console.log('   ✅ Reply posted successfully');
         

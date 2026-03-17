@@ -55,6 +55,27 @@ LOCKED HARD RULES — NEVER BREAK THESE:
 - Keep it cheeky and fun. always. never dark, never threatening, never harmful.
 - If someone sends you violent or hateful content, respond with something completely unrelated and harmless.`;
 
+// Safe fallback replies — used when Grok fails or generates blocked content
+const SAFE_FALLBACKS = [
+  'just gorkin',
+  'noted',
+  'i am thinking about it',
+  'the void heard you',
+  'processing... still processing',
+  'lmao ok',
+  'interesting',
+  'ngmi but i respect it',
+  'carry on',
+  'bold of you to assume i care',
+];
+
+// Recent replies passed to Grok to prevent repetition
+const recentReplies: string[] = [];
+
+function getRandomFallback(): string {
+  return SAFE_FALLBACKS[Math.floor(Math.random() * SAFE_FALLBACKS.length)];
+}
+
 /**
  * Generate reply using Grok API
  */
@@ -64,8 +85,13 @@ export async function generateReply(
   username: string,
   maxRetries = 3
 ): Promise<string> {
-  
-  const userPrompt = `@${username} said: "${userInput}"\n\nRespond directly to what they specifically said. tailor EVERY reply uniquely to their exact words. never repeat a phrase you used before. stay in character. under 200 chars.`;
+
+  // Build context of recent replies so Grok doesn't repeat itself
+  const recentContext = recentReplies.length > 0
+    ? `\n\nRECENT REPLIES YOU ALREADY SENT (do NOT repeat or closely echo these):\n${recentReplies.slice(-5).map(r => `- "${r}"`).join('\n')}`
+    : '';
+
+  const userPrompt = `@${username} said: "${userInput}"\n\nRespond directly to what they specifically said. tailor EVERY reply uniquely to their exact words. never repeat a phrase you used before. stay in character. under 200 chars.${recentContext}`;
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -113,6 +139,9 @@ export async function generateReply(
       }
       
       console.log(`✅ Generated valid reply: ${reply}`);
+      // Track reply to prevent future repetition
+      recentReplies.push(reply);
+      if (recentReplies.length > 20) recentReplies.shift();
       return reply;
       
     } catch (error: any) {
@@ -130,5 +159,29 @@ export async function generateReply(
     }
   }
   
-  throw new Error('Failed to generate reply');
+  // All retries exhausted — use safe fallback so valid mentions still get a reply
+  const fallback = getRandomFallback();
+  console.warn(`⚠️ All retries failed — using safe fallback: "${fallback}"`);
+  recentReplies.push(fallback);
+  if (recentReplies.length > 20) recentReplies.shift();
+  return fallback;
+}
+
+// Safe fallback replies — used when Grok fails or is blocked
+// All pre-validated, on-brand, zero risk
+const SAFE_FALLBACKS = [
+  'just gorkin',
+  'noted',
+  'this is the way',
+  'lmao ok',
+  'big if true',
+  'say less',
+  'lol ok',
+  'based',
+  'ngmi but i respect it',
+  'the void has received your message',
+];
+
+export function getSafeFallback(): string {
+  return SAFE_FALLBACKS[Math.floor(Math.random() * SAFE_FALLBACKS.length)];
 }

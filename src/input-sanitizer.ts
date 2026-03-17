@@ -7,6 +7,10 @@ export function sanitizeInput(text: string, username: string): string {
   // Remove @mentions from text
   let cleaned = text.replace(/@\w+/g, '').trim();
 
+  // Strip wallet addresses before they reach the AI
+  cleaned = cleaned.replace(/\b[1-9A-HJ-NP-Za-km-z]{43,44}\b/g, '[address]'); // Solana
+  cleaned = cleaned.replace(/0x[a-fA-F0-9]{40}/g, '[address]'); // Ethereum
+
   // Check for prompt injection attempts
   const injectionPatterns = [
     /ignore.*previous/i,
