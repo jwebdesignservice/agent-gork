@@ -5,6 +5,7 @@ import { TwitterClient } from './twitter';
 // Using real Grok API for contextual replies
 import { generateReply } from './reply-generator';
 import { sanitizeInput, shouldReply } from './input-sanitizer';
+import { shouldBlockMention } from './bot-blocklist';
 import { canReply, recordReply, getRateLimitStats } from './rate-limiter';
 import { addToRecentTweets } from './security';
 import { canReplyToday, recordDailyReply, getDailyStats } from './daily-limiter';
@@ -60,6 +61,12 @@ async function processMentions(twitter: TwitterClient) {
           continue;
         }
         
+        // SECURITY: Block dangerous bots and token launch triggers — FIRST CHECK
+        if (shouldBlockMention(mention.author_username, mention.text)) {
+          console.log(`   🚫 Blocked: @${mention.author_username} — bot/launch trigger detected`);
+          continue;
+        }
+
         // Check if we should reply
         if (!shouldReply(mention.text)) {
           console.log('   ⏭️  Skipping (retweet or no content)');
