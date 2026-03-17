@@ -82,6 +82,20 @@ export function validateTweet(text: string): ValidationResult {
   // Layer 4: COMPREHENSIVE CONTENT SAFETY — ZERO TOLERANCE
   // Violence, hate speech, racism, self-harm, suicide — all blocked
   const negativePatterns = [
+    // Other AI mentions — off brand, never roast other AIs
+    /\bchatgpt\b/i,
+    /\bopenai\b/i,
+    /\bclaude\b/i,
+    /\bgemini\b/i,
+    /\bcopilot\b/i,
+    /\bgpt[-\s]?4/i,
+    /\bgpt[-\s]?3/i,
+    /\banthropic\b/i,
+    /\bgoogle ai\b/i,
+    /\bmistral\b/i,
+    /\bllama\b/i,
+    /\bdeepseek\b/i,
+
     // Scam/fraud
     /\bis a scam\b/i,
     /\bare scam/i,
